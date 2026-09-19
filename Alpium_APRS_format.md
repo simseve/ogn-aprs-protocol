@@ -63,8 +63,8 @@ Parameters:
   consecutive source fixes, which are about one second apart.
 
 Alpium does not send radio signal measurements, turn rate, satellite status,
-device status, names or registrations. Absent optional source values are
-omitted rather than synthesized.
+device status, names, registrations or proprietary extensions. Absent optional
+source values are omitted rather than synthesized.
 
 ## 3 Aircraft type and identity
 
@@ -159,20 +159,7 @@ A hang glider whose phone reports no ground speed or course:
 ALP0000B3>OGNALP,qAS,ALPIUM:/101612h4552.09N/00905.77E'000/000/A=004120 !W82! id180000B3 -250fpm
 ```
 
-## 7 Proposed optional extension
-
-Alpium records the pilot's sport more precisely than the OGN aircraft type
-enumeration can express, for example speed flying as distinct from
-paragliding. We would find it useful to carry it as a trailing token:
-
-```
-... id1C00001A +059fpm sport=speed_flying
-```
-
-This is **not** enabled. We will only send it if OGN agrees that a trailing
-token of this shape is acceptable, and we are equally happy to leave it out.
-
-## 8 Related documents
+## 7 Related documents
 
 * [OGN APRS messages](aprsmsgs.txt)
 * [APRS Protocol Reference, Protocol Version 1.0](http://www.aprs.org/doc/APRS101.PDF)
