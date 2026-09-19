@@ -1,0 +1,9 @@
+# The following beacons are examples for Alpium's APRS format version OGNALP-1.
+# The first message is a paraglider climbing in a thermal. The second is a hang
+# glider whose phone reports no ground speed or course, which OGN-flavoured
+# APRS encodes as 000/000.
+#
+# source: https://github.com/glidernet/ogn-aprs-protocol
+#
+ALP00001A>OGNALP,qAS,ALPIUM:/101530h4550.36N/00902.04E'090/015/A=003281 !W46! id1C00001A +059fpm
+ALP0000B3>OGNALP,qAS,ALPIUM:/101612h4552.09N/00905.77E'000/000/A=004120 !W82! id180000B3 -250fpm

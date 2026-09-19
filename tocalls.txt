@@ -45,6 +45,7 @@ OGSKYB          for the SkyBase app and Vario
 OGBSTOP         for the BirdStop devices		https://www.birdstop.com/
 OGNPUR      	for the PureTrack             		https://puretrack.io/
 OGMLAT      	for the cwOGN Multilateration msgs      https://glidernet.org
+OGNALP      	for the Alpium platform       		https://alpium.io
 
 
 ---------------------------------------------------------------------------------------------------------------------------------
