@@ -1,8 +1,8 @@
 ---
 title: OGNALP APRS message specification
 description: APRS messages sent by the Alpium backend to OGN
-date: 2026-09-19
-version: 1.0.0
+date: 2026-09-23
+version: 1.0.1
 ---
 
 # OGNALP APRS message specification
@@ -69,32 +69,41 @@ source values are omitted rather than synthesized.
 ## 3 Aircraft type and identity
 
 The low two bits of the detail byte contain the OGN address type. Alpium uses
-address type `0` (random): Alpium is not an ICAO, FLARM or OGN-tracker
-registry, and claiming one of those types would collide with real addresses
-in them.
+address type `3` (OGN). Types `1` and `2` belong to the ICAO and FLARM
+registries and are not ours to claim.
 
 The OGN aircraft type is taken from the sport the pilot is flying, as
 recorded by the platform:
 
 | Sport | OGN aircraft type | detail byte |
 |---|---|---|
-| paragliding, speed flying | `7` paraglider | `1C` |
-| hang gliding | `6` hang glider | `18` |
-| gliding | `1` glider | `04` |
-| powered free flight | `8` powered aircraft | `20` |
-| any other air sport | `0` unknown | `00` |
+| paragliding, speed flying | `7` paraglider | `1F` |
+| hang gliding | `6` hang glider | `1B` |
+| gliding | `1` glider | `07` |
+| powered free flight | `8` powered aircraft | `23` |
+| any other air sport | `0` unknown | `03` |
 
 No stealth flag and no no-track flag are set. A position whose sport cannot
 be established is not transmitted, so an unknown aircraft type reaches the
 network only for an air sport outside the table above.
 
-The 24-bit address is allocated sequentially from `000001` and is stable for
-the life of the pilot's Alpium account. It is deliberately per pilot rather
-than per device: an Alpium device identifier is a phone identifier that
-changes when the app is reinstalled, and a pilot carrying both a phone and a
-tracker is one aircraft, not two. Alpium transmits at most one device per
-pilot at any moment. The address may optionally be registered in the OGN
-Device Database; registration is not required for transmission.
+The 24-bit address is stable for the life of the pilot's Alpium account. It
+is deliberately per pilot rather than per device: an Alpium device identifier
+is a phone identifier that changes when the app is reinstalled, and a pilot
+carrying both a phone and a tracker is one aircraft, not two. Alpium
+transmits at most one device per pilot at any moment.
+
+Because address type `3` places the address in a shared namespace, addresses
+are drawn at RANDOM from `000001` to `FFFFFE` and checked against the OGN
+Device Database before being assigned, so Alpium never issues an address that
+is already registered to an aircraft. The database is re-read daily. An
+earlier draft of this document allocated sequentially from `000001`, which
+would have issued `000015` to Alpium's twenty-first pilot; that address is a
+registered OGN device, and thirteen more registered OGN addresses lie below
+`001388`.
+
+Alpium does not create or update Device Database entries. A pilot may
+register their own address; registration is not required for transmission.
 
 ## 4 Privacy and consent
 
@@ -150,13 +159,13 @@ Both examples below are produced by the encoder itself and decode with
 `python-ogn-client`. A paraglider climbing in a thermal:
 
 ```
-ALP00001A>OGNALP,qAS,ALPIUM:/101530h4550.36N/00902.04E'090/015/A=003281 !W46! id1C00001A +059fpm
+ALP9E3C1A>OGNALP,qAS,ALPIUM:/101530h4550.36N/00902.04E'090/015/A=003281 !W46! id1F9E3C1A +059fpm
 ```
 
 A hang glider whose phone reports no ground speed or course:
 
 ```
-ALP0000B3>OGNALP,qAS,ALPIUM:/101612h4552.09N/00905.77E'000/000/A=004120 !W82! id180000B3 -250fpm
+ALP4B77D0>OGNALP,qAS,ALPIUM:/101612h4552.09N/00905.77E'000/000/A=004120 !W82! id1B4B77D0 -250fpm
 ```
 
 ## 7 Related documents
